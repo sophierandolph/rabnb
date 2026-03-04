@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RABnB — Fort Davis, TX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 14px;
+      color: #222222;
+      background: #ffffff;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid #DDDDDD;
+      padding: 16px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 700;
+      color: #FF385C;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-right {
+      font-size: 13px;
+      color: #717171;
+    }
+
+    .nav-right strong {
+      color: #222;
+    }
+
+    /* PHOTO GRID */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 260px 260px;
+      gap: 8px;
+      padding: 24px 80px;
+      position: relative;
+    }
+
+    .photo-main {
+      grid-row: 1 / 3;
+      border-radius: 12px 0 0 12px;
+      overflow: hidden;
+    }
+
+    .photo-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 260px 260px;
+      gap: 8px;
+    }
+
+    .photo-slot {
+      background: #E8E0D5;
+      overflow: hidden;
+    }
+
+    .photo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-main .photo-slot {
+      height: 100%;
+      border-radius: 12px 0 0 12px;
+    }
+
+    .photo-right .photo-slot:nth-child(1) { border-radius: 0 12px 0 0; }
+    .photo-right .photo-slot:nth-child(2) { }
+    .photo-right .photo-slot:nth-child(3) { }
+    .photo-right .photo-slot:nth-child(4) { border-radius: 0 0 12px 0; }
+
+    .show-photos-btn {
+      position: absolute;
+      bottom: 42px;
+      right: 96px;
+      background: #fff;
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* MAIN LAYOUT */
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 80px;
+      padding: 32px 80px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* LEFT COLUMN */
+    .listing-left h1 {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .listing-meta {
+      color: #717171;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .listing-meta span::after {
+      content: ' · ';
+    }
+    .listing-meta span:last-child::after {
+      content: '';
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .stars { color: #222; font-weight: 600; }
+    .review-count { color: #717171; text-decoration: underline; cursor: pointer; }
+
+    .superhost-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #222;
+      background: #FFF0F0;
+      border: 1px solid #FFD0D8;
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid #DDDDDD;
+      margin: 24px 0;
+    }
+
+    /* HOST ROW */
+    .host-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .host-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #FF385C;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: white;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .host-info .host-name {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .host-info .host-sub {
+      font-size: 13px;
+      color: #717171;
+    }
+
+    /* SECTION HEADINGS */
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    /* ABOUT */
+    .about p {
+      line-height: 1.7;
+      color: #444;
+      margin-bottom: 10px;
+    }
+
+    /* SLEEPING */
+    .sleeping-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .sleep-card {
+      border: 1px solid #DDDDDD;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .sleep-icon { font-size: 24px; margin-bottom: 10px; }
+    .sleep-name { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+    .sleep-desc { font-size: 13px; color: #717171; line-height: 1.5; }
+
+    /* AMENITIES */
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 32px;
+    }
+
+    .amenity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 14px;
+      padding: 4px 0;
+    }
+
+    .amenity-icon { font-size: 20px; width: 24px; text-align: center; }
+
+    /* NEARBY */
+    .nearby-list { display: flex; flex-direction: column; gap: 16px; }
+
+    .nearby-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .nearby-icon {
+      font-size: 22px;
+      width: 40px;
+      height: 40px;
+      background: #F7F0E8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nearby-text .nearby-name { font-weight: 600; font-size: 14px; }
+    .nearby-text .nearby-dist { font-size: 12px; color: #FF385C; font-weight: 500; margin-bottom: 2px; }
+    .nearby-text .nearby-desc { font-size: 13px; color: #717171; line-height: 1.5; }
+
+    /* RULES */
+    .rules-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .rules-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .rules-list li::before {
+      content: '·';
+      font-size: 20px;
+      color: #717171;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    /* RIGHT COLUMN — BID WIDGET */
+    .bid-widget {
+      position: sticky;
+      top: 88px;
+      border: 1px solid #DDDDDD;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+      height: fit-content;
+    }
+
+    .bid-price {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .bid-price span {
+      font-size: 14px;
+      font-weight: 400;
+      color: #717171;
+    }
+
+    .auction-info-box {
+      background: #FFF5F6;
+      border: 1px solid #FFD0D8;
+      border-radius: 10px;
+      padding: 14px;
+      margin: 16px 0;
+    }
+
+    .auction-info-box .auction-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #FF385C;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .auction-info-box .auction-val {
+      font-size: 15px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .guest-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #DDDDDD;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+
+    .guest-row .guest-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+    .guest-row .guest-val { font-size: 14px; color: #717171; }
+
+    .bid-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #FF385C, #E8143A);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      margin-bottom: 12px;
+    }
+
+    .bid-note {
+      font-size: 12px;
+      color: #717171;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .widget-divider {
+      border: none;
+      border-top: 1px solid #EEEEEE;
+      margin: 16px 0;
+    }
+
+    .skoolie-note {
+      font-size: 12px;
+      color: #717171;
+      background: #F7F7F7;
+      border-radius: 8px;
+      padding: 10px 12px;
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+
+    .skoolie-note strong { color: #222; }
+
+    /* REVIEWS */
+    .reviews-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .reviews-header .big-rating {
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .review-card {
+      padding: 0;
+    }
+
+    .review-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .reviewer-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #C8B59A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: white;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .reviewer-name { font-weight: 600; font-size: 14px; }
+    .reviewer-date { font-size: 12px; color: #717171; }
+    .review-text { font-size: 14px; color: #444; line-height: 1.6; }
+
+    /* HERO IMAGE FOCAL POINT */
+    .hero-img { object-position: top; }
+
+    /* MOBILE BID WIDGET (hidden on desktop) */
+    .mobile-bid-inline { display: none; }
+
+    /* MOBILE STICKY BAR (hidden on desktop) */
+    .mobile-sticky-bar { display: none; }
+
+    @media print {
+      nav { position: relative; }
+      .bid-widget { position: relative; top: 0; box-shadow: none; }
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav {
+        padding: 14px 16px;
+      }
+
+      .nav-right {
+        font-size: 11px;
+      }
+
+      /* Photos: hero full width, 4 small below in 2x2 */
+      .photo-grid {
+        display: block;
+        padding: 0;
+        gap: 0;
+      }
+
+      .photo-main {
+        height: 260px;
+        border-radius: 0;
+      }
+
+      .photo-main .photo-slot {
+        height: 260px;
+        border-radius: 0;
+      }
+
+      .hero-img {
+        object-position: center 55%;
+      }
+
+      .photo-right {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 130px 130px;
+        gap: 3px;
+        margin-top: 3px;
+      }
+
+      .photo-right .photo-slot:nth-child(1) { border-radius: 0; }
+      .photo-right .photo-slot:nth-child(4) { border-radius: 0; }
+
+      /* Main: single column */
+      .main {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 20px 16px 100px;
+      }
+
+      .listing-left h1 { font-size: 20px; }
+
+      /* Hide sidebar bid widget, show inline version */
+      .bid-sidebar { display: none; }
+      .mobile-bid-inline { display: block; }
+
+      /* Grids: single column */
+      .sleeping-grid { grid-template-columns: 1fr; }
+      .amenities-grid { grid-template-columns: 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+
+      /* Sticky bottom CTA bar */
+      .mobile-sticky-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-top: 1px solid #DDDDDD;
+        padding: 12px 16px;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 200;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+      }
+
+      .mobile-sticky-bar .mobile-price {
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .mobile-sticky-bar .mobile-price span {
+        font-size: 12px;
+        font-weight: 400;
+        color: #717171;
+      }
+
+      .mobile-sticky-bar .mobile-bid-btn {
+        background: linear-gradient(135deg, #FF385C, #E8143A);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 18px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">
+      <img src="rabnb-logo.svg" alt="RABnB" style="height:52px;display:block;">
+    </div>
+    <div class="nav-right">🍺 <strong>Beer Bike Auction</strong> — March 6, 7:30–9pm</div>
+  </nav>
+
+  <!-- PHOTO GRID -->
+  <div class="photo-grid">
+    <div class="photo-main">
+      <div class="photo-slot" style="height:100%">
+        <img src="rabnb-photos/IMG_5047.png" alt="House and Skoolie at golden hour" class="hero-img">
+      </div>
+    </div>
+    <div class="photo-right">
+      <div class="photo-slot"><img src="rabnb-photos/IMG_2468.jpg" alt="Milky Way night sky"></div>
+      <div class="photo-slot"><img src="rabnb-photos/IMG_2858.jpg" alt="Living room interior"></div>
+      <div class="photo-slot"><img src="rabnb-photos/IMG_2842.jpg" alt="Outdoor patio at sunset"></div>
+      <div class="photo-slot"><img src="rabnb-photos/IMG_3566.jpg" alt="Fiery red sunset"></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="listing-left">
+
+      <h1>Entire mountain retreat in Fort Davis, TX</h1>
+      <div class="listing-meta">
+        <span>Up to 12 guests</span>
+        <span>2 bedrooms</span>
+        <span>2 beds + camping</span>
+        <span>2 baths</span>
+      </div>
+      <div class="rating-row">
+        <span class="stars">★ 5.0</span>
+        <span class="review-count">4 reviews</span>
+        <span style="color:#DDDDDD">·</span>
+        <span class="superhost-badge">🏠 Baker Superhost</span>
+      </div>
+
+      <hr class="divider">
+
+      <!-- HOST -->
+      <div class="host-row">
+        <div class="host-avatar">S&P</div>
+        <div class="host-info">
+          <div class="host-name">Hosted by Sophie & Patrick</div>
+          <div class="host-sub">Your RAs · 2 years hosting · Response rate: very high (they live next door)</div>
+        </div>
+      </div>
+
+      <!-- MOBILE BID WIDGET -->
+      <div class="mobile-bid-inline">
+        <div class="bid-widget" style="margin:20px 0;">
+          <div class="bid-price">Starting at $50 <span>per group</span></div>
+          <div class="auction-info-box">
+            <div class="auction-label">Beer Bike Auction</div>
+            <div class="auction-val">March 6 · 7:30–9:00pm</div>
+            <div style="font-size:13px;color:#717171;margin-top:4px">Baker College · Come ready to bid</div>
+          </div>
+          <div class="guest-row">
+            <div><div class="guest-label">Guests</div><div class="guest-val">Up to 12 (w/ camping gear)</div></div>
+            <span style="font-size:20px">👥</span>
+          </div>
+          <button class="bid-btn">🍺 Bid at Beer Bike Auction</button>
+          <div class="bid-note">You won't be charged yet — just come ready to outbid your friends.</div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- CONTACT -->
+      <h2>Questions?</h2>
+      <p style="line-height:1.7;color:#444;">Reach out to us directly — happy to answer anything about the property, the Skoolie, dates, or what to do out there.</p>
+      <div style="margin-top:12px;">
+        <a href="mailto:sfr2@rice.edu,pbr2@rice.edu?subject=RABnB%20Beer%20Bike%20Auction%20Question" style="display:inline-flex;align-items:center;gap:8px;background:#FFF0F0;border:1px solid #FFD0D8;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:500;color:#222;text-decoration:none;">✉️ Email Sophie & Patrick</a>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ABOUT -->
+      <div class="about">
+        <h2>About this place</h2>
+        <p>Our place sits on 20 acres in the Davis Mountains of West Texas, at about 5,000 feet elevation. Fort Davis is one of the least light-polluted areas in the lower 48 — the night sky here is something you have to see to believe. We've watched meteor showers from the back porch and caught star parties at McDonald Observatory, which is 10 minutes up the road.</p>
+        <p>The house sleeps up to 6: a primary bedroom, a second room with a pull-out sofa, and two twin cots that can go anywhere. The Skoolie — a converted school bus — adds a queen bed sleeping option when it's available (more on that below). With camping gear on the 20 acres, the whole place can host up to 12.</p>
+        <p>Fort Davis itself is a town of about 1,200 people. There's more to do in the surrounding area than you might expect: Big Bend is 2+ hours south, Marfa is 40 minutes away, Balmorhea's famous spring-fed pool is 37 minutes north. And The Rendezvous — bar, made-to-order pizza, pickleball, live music — is right in town.</p>
+        <p>This is a place to decompress. Come ready to slow down, look up, and explore.</p>
+      </div>
+
+      <hr class="divider">
+
+      <!-- SLEEPING -->
+      <h2>Where you'll sleep</h2>
+      <div class="sleeping-grid">
+        <div class="sleep-card">
+          <div class="sleep-icon">🛏️</div>
+          <div class="sleep-name">Primary Bedroom</div>
+          <div class="sleep-desc">1 king bed · Fresh sheets · Record player · Marfa Public Radio (93.5 FM) · Private bathroom</div>
+        </div>
+        <div class="sleep-card">
+          <div class="sleep-icon">🛋️</div>
+          <div class="sleep-name">Second Room</div>
+          <div class="sleep-desc">Queen-sized pull-out sofa with mattress topper and bedding · Plus two twin cots with sheets and pillows available anywhere in the house · Better than it sounds, we promise</div>
+        </div>
+        <div class="sleep-card">
+          <div class="sleep-icon">🚌</div>
+          <div class="sleep-name">The Skoolie</div>
+          <div class="sleep-desc">Converted school bus · 1 queen bed · AC/heat available · Availability varies — confirm when bidding</div>
+        </div>
+        <div class="sleep-card">
+          <div class="sleep-icon">⛺</div>
+          <div class="sleep-name">The Land (20 acres)</div>
+          <div class="sleep-desc">Bring your tent · The area closest to the house is fenced in, which discourages wildlife from wandering through camp — good if you want to keep things calm. You can also spread out further on the property if you want more space and don't mind the occasional curious deer.</div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- AMENITIES -->
+      <h2>What this place offers</h2>
+      <div class="amenities-grid">
+        <div class="amenity"><span class="amenity-icon">🌌</span> Dark sky — one of the best in the US</div>
+        <div class="amenity"><span class="amenity-icon">📶</span> WiFi</div>
+        <div class="amenity"><span class="amenity-icon">🍳</span> Full kitchen (stocked spices, Roomba)</div>
+        <div class="amenity"><span class="amenity-icon">❄️</span> AC & heat</div>
+        <div class="amenity"><span class="amenity-icon">🧺</span> Washer & dryer</div>
+        <div class="amenity"><span class="amenity-icon">🎵</span> Record player & Bluetooth speakers</div>
+        <div class="amenity"><span class="amenity-icon">☀️</span> Fully solar-powered property (installed by Sophie & Patrick)</div>
+        <div class="amenity"><span class="amenity-icon">⚡</span> EV charging on site</div>
+        <div class="amenity"><span class="amenity-icon">🌿</span> Outdoor patio & 20 acres to roam</div>
+        <div class="amenity"><span class="amenity-icon">🦌</span> Wildlife (deer, javelina, aoudad, lizards)</div>
+        <div class="amenity"><span class="amenity-icon">🔥</span> Fireplace (vibes only, per Patrick)</div>
+        <div class="amenity"><span class="amenity-icon">🚐</span> Emergency truck access if needed</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- NEARBY -->
+      <h2>What's nearby</h2>
+      <div class="nearby-list">
+        <div class="nearby-item">
+          <div class="nearby-icon">🔭</div>
+          <div class="nearby-text">
+            <div class="nearby-dist">10 min away</div>
+            <div class="nearby-name">McDonald Observatory</div>
+            <div class="nearby-desc">UT affiliate with regular star parties and solar viewing. One of the best stargazing sites in the country. Book tickets in advance — they fill up.</div>
+          </div>
+        </div>
+        <div class="nearby-item">
+          <div class="nearby-icon">🥾</div>
+          <div class="nearby-text">
+            <div class="nearby-dist">5 min away</div>
+            <div class="nearby-name">Davis Mountains State Park</div>
+            <div class="nearby-desc">2,700 acres of trails, bird watching, and the famous Davis Mountains Scenic Loop drive. The view from the top does not disappoint.</div>
+          </div>
+        </div>
+        <div class="nearby-item">
+          <div class="nearby-icon">🏛️</div>
+          <div class="nearby-text">
+            <div class="nearby-dist">15 min away</div>
+            <div class="nearby-name">Fort Davis National Historic Site</div>
+            <div class="nearby-desc">One of the best-preserved frontier military posts in the West. Walking tours, museum, and a lot of "wait, this is actually cool" moments.</div>
+          </div>
+        </div>
+        <div class="nearby-item">
+          <div class="nearby-icon">🌊</div>
+          <div class="nearby-text">
+            <div class="nearby-dist">37 min away</div>
+            <div class="nearby-name">Balmorhea State Park</div>
+            <div class="nearby-desc">The world's largest spring-fed swimming pool. Crystal clear, snorkeling-worthy, and genuinely refreshing in the middle of the desert. While you're there: Matta's Burger Place has curly fries that are not to be missed.</div>
+          </div>
+        </div>
+        <div class="nearby-item">
+          <div class="nearby-icon">🎨</div>
+          <div class="nearby-text">
+            <div class="nearby-dist">~40 min away</div>
+            <div class="nearby-name">Marfa</div>
+            <div class="nearby-desc">The arts scene. The Prada Marfa. The Chinati Foundation. The Marfa Lights. It's a vibe. Go at least once while you're out there.</div>
+          </div>
+        </div>
+        <div class="nearby-item">
+          <div class="nearby-icon">🏔️</div>
+          <div class="nearby-text">
+            <div class="nearby-dist">~2+ hours away</div>
+            <div class="nearby-name">Big Bend National Park</div>
+            <div class="nearby-desc">Chisos Mountains, hot springs on the Rio Grande, and a day trip across the border to the Mexican village of Boquillas (bring your passport). Worth the drive.</div>
+          </div>
+        </div>
+        <div class="nearby-item">
+          <div class="nearby-icon">🍕</div>
+          <div class="nearby-text">
+            <div class="nearby-dist">15 min away</div>
+            <div class="nearby-name">The Rendezvous</div>
+            <div class="nearby-desc">Bar, made-to-order pizza (actually really good), pickleball, live music. The local hotspot. Go here.</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- REVIEWS -->
+      <div class="reviews-header">
+        <div class="big-rating">★ 5.0</div>
+        <div>
+          <div style="font-weight:600;font-size:16px">4 reviews</div>
+          <div style="font-size:13px;color:#717171">Baker College, Houston TX</div>
+        </div>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-avatar">JT</div>
+            <div>
+              <div class="reviewer-name">Jake T.</div>
+              <div class="reviewer-date">March 2025</div>
+            </div>
+          </div>
+          <div class="review-text">Genuinely one of the best weekends of my college career. We did a star party at McDonald Observatory, cooked dinner, and sat outside until 2am. Couldn't see my phone (no service) and honestly didn't care.</div>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-avatar" style="background:#7A9E7E">MC</div>
+            <div>
+              <div class="reviewer-name">Maya C.</div>
+              <div class="reviewer-date">October 2024</div>
+            </div>
+          </div>
+          <div class="review-text">Four of us bid on this together and split the cost. The Skoolie was incredible — I claimed it immediately and I regret nothing. Fort Davis is the most Texas-feeling place I've ever been in the best possible way.</div>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-avatar" style="background:#7B9EC4">RB</div>
+            <div>
+              <div class="reviewer-name">Riley B.</div>
+              <div class="reviewer-date">June 2024</div>
+            </div>
+          </div>
+          <div class="review-text">We drove out to Balmorhea on day 2 and the spring pool is absolutely unreal. Snorkeled for like 3 hours. On the way back stopped in Marfa. Do not skip Marfa.</div>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-avatar" style="background:#B8866E">AK</div>
+            <div>
+              <div class="reviewer-name">Alex K.</div>
+              <div class="reviewer-date">April 2024</div>
+            </div>
+          </div>
+          <div class="review-text">Patrick and Sophie were there part of the time which was genuinely fun — Patrick knows every plant and animal and will tell you about all of them whether you asked or not (5 stars for this). The dark sky is not a joke. Nothing prepares you for it.</div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- HOUSE RULES -->
+      <h2>House rules</h2>
+      <ul class="rules-list">
+        <li>Not a party venue — this is a place to recharge, not rage</li>
+        <li>Up to 12 guests with camping gear; 6 comfortably in the house</li>
+        <li>Dates must be coordinated with Sophie & Patrick in advance — win first, then we'll work it out</li>
+        <li>Skoolie availability depends on our travel schedule — ask before bidding if it's key for your group</li>
+        <li>Dark sky rules: red exterior lights only after dark — neighbors take this seriously and so do we</li>
+        <li>Leave it as you found it — sweep, take your trash, put food in sealed containers</li>
+        <li>Venomous wildlife is out there (snakes, scorpions, spiders) — they prefer to avoid you, return the favor</li>
+      </ul>
+
+
+    </div>
+
+    <!-- RIGHT: BID WIDGET -->
+    <div class="bid-sidebar">
+      <div class="bid-widget">
+        <div class="bid-price">Starting at $50 <span>per group</span></div>
+
+        <div class="auction-info-box">
+          <div class="auction-label">Beer Bike Auction</div>
+          <div class="auction-val">March 6 · 7:30–9:00pm</div>
+          <div style="font-size:13px;color:#717171;margin-top:4px">Baker College · Come ready to bid</div>
+        </div>
+
+        <div class="guest-row">
+          <div>
+            <div class="guest-label">Guests</div>
+            <div class="guest-val">Up to 12 (w/ camping gear)</div>
+          </div>
+          <span style="font-size:20px">👥</span>
+        </div>
+
+        <button class="bid-btn">🍺 Bid at Beer Bike Auction</button>
+
+        <div class="bid-note">You won't be charged yet — just come ready to outbid your friends.</div>
+
+        <div class="widget-divider"></div>
+
+        <div style="font-size:13px;display:flex;justify-content:space-between;color:#444">
+          <span>Starting bid</span><span style="font-weight:600">$50</span>
+        </div>
+        <div style="font-size:12px;color:#717171;margin-top:6px">Final price determined by auction. Coordinate dates with Sophie & Patrick after winning.</div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:24px 16px 32px;font-size:12px;color:#aaa;border-top:1px solid #eee;margin-top:40px;">
+    built with vibes by Sophie, Patrick, Charlie, The Beast, and Claude &copy; 2026
+  </div>
+
+  <!-- MOBILE STICKY BOTTOM BAR -->
+  <div class="mobile-sticky-bar">
+    <div class="mobile-price">$50 starting bid <span>· Mar 6, 7:30pm</span></div>
+    <button class="mobile-bid-btn">🍺 Bid at Auction</button>
+  </div>
+
+</body>
+</html>
