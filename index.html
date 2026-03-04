@@ -444,6 +444,118 @@
     /* MOBILE BID WIDGET (hidden on desktop) */
     .mobile-bid-inline { display: none; }
 
+    /* GALLERY OVERLAY */
+    .gallery-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #fff;
+      z-index: 500;
+      overflow-y: auto;
+    }
+
+    .gallery-overlay.open { display: block; }
+
+    .gallery-header {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #DDDDDD;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 10;
+    }
+
+    .gallery-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .gallery-close {
+      background: none;
+      border: 1.5px solid #222;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #222;
+      flex-shrink: 0;
+    }
+
+    .gallery-close:hover { background: #f5f5f5; }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .gallery-grid .gallery-item {
+      overflow: hidden;
+      border-radius: 10px;
+    }
+
+    .gallery-grid .gallery-item:first-child {
+      grid-column: 1 / 3;
+    }
+
+    .gallery-grid .gallery-item img {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .gallery-grid .gallery-item:first-child img {
+      height: 480px;
+    }
+
+    .gallery-grid .gallery-item img:hover { opacity: 0.92; }
+
+    /* Show all photos button */
+    .show-photos-btn {
+      position: absolute;
+      bottom: 42px;
+      right: 96px;
+      background: #fff;
+      border: 1.5px solid #222;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+    }
+
+    .show-photos-btn:hover { background: #f5f5f5; }
+
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        padding: 12px;
+        gap: 8px;
+      }
+      .gallery-grid .gallery-item:first-child { grid-column: 1; }
+      .gallery-grid .gallery-item img { height: 260px; }
+      .gallery-grid .gallery-item:first-child img { height: 300px; }
+      .show-photos-btn { right: 16px; bottom: 24px; }
+    }
+
     /* MOBILE STICKY BAR (hidden on desktop) */
     .mobile-sticky-bar { display: none; }
 
@@ -576,6 +688,7 @@
       <div class="photo-slot"><img src="rabnb-photos/IMG_2842.jpg" alt="Outdoor patio at sunset"></div>
       <div class="photo-slot"><img src="rabnb-photos/IMG_3566.jpg" alt="Fiery red sunset"></div>
     </div>
+    <button class="show-photos-btn" onclick="openGallery()">⊞ &nbsp;Show all photos</button>
   </div>
 
   <!-- MAIN -->
@@ -619,6 +732,10 @@
           <div class="guest-row">
             <div><div class="guest-label">Guests</div><div class="guest-val">Up to 12 (w/ camping gear)</div></div>
             <span style="font-size:20px">👥</span>
+          </div>
+          <div class="guest-row">
+            <div><div class="guest-label">Stay</div><div class="guest-val">5 nights max</div></div>
+            <span style="font-size:20px">🌙</span>
           </div>
           <button class="bid-btn">🍺 Bid at Beer Bike Auction</button>
           <div class="bid-note">You won't be charged yet — just come ready to outbid your friends.</div>
@@ -756,6 +873,22 @@
 
       <hr class="divider">
 
+      <!-- WHERE YOU'LL BE -->
+      <h2>Where you'll be</h2>
+      <p style="color:#444;line-height:1.7;margin-bottom:16px;">Fort Davis, Texas &nbsp;·&nbsp; Jeff Davis County &nbsp;·&nbsp; 9 hours west of Houston — did somebody say road trip?<br>Set in the Davis Mountains at about 5,000 ft elevation — cooler, greener, and more dramatic than you'd expect from West Texas.</p>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #DDDDDD;">
+        <iframe
+          src="https://maps.google.com/maps?q=30.621325,-103.986457&t=p&z=14&ie=UTF8&iwloc=&output=embed"
+          width="100%"
+          height="400"
+          style="border:0;display:block;"
+          allowfullscreen=""
+          loading="lazy">
+        </iframe>
+      </div>
+
+      <hr class="divider">
+
       <!-- REVIEWS -->
       <div class="reviews-header">
         <div class="big-rating">★ 5.0</div>
@@ -814,6 +947,7 @@
       <ul class="rules-list">
         <li>Not a party venue — this is a place to recharge, not rage</li>
         <li>Up to 12 guests with camping gear; 6 comfortably in the house</li>
+        <li>Maximum stay of 5 nights</li>
         <li>Dates must be coordinated with Sophie & Patrick in advance — win first, then we'll work it out</li>
         <li>Skoolie availability depends on our travel schedule — ask before bidding if it's key for your group</li>
         <li>Dark sky rules: red exterior lights only after dark — neighbors take this seriously and so do we</li>
@@ -843,6 +977,14 @@
           <span style="font-size:20px">👥</span>
         </div>
 
+        <div class="guest-row">
+          <div>
+            <div class="guest-label">Stay</div>
+            <div class="guest-val">5 nights max</div>
+          </div>
+          <span style="font-size:20px">🌙</span>
+        </div>
+
         <button class="bid-btn">🍺 Bid at Beer Bike Auction</button>
 
         <div class="bid-note">You won't be charged yet — just come ready to outbid your friends.</div>
@@ -859,6 +1001,28 @@
 
   </div>
 
+  <!-- GALLERY OVERLAY -->
+  <div class="gallery-overlay" id="galleryOverlay">
+    <div class="gallery-header">
+      <button class="gallery-close" onclick="closeGallery()">✕</button>
+      <div class="gallery-title">All photos &nbsp;·&nbsp; RABnB Fort Davis, TX</div>
+      <div style="width:36px"></div>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="rabnb-photos/IMG_5047.png" alt="House and Skoolie at golden hour"></div>
+      <div class="gallery-item"><img src="rabnb-photos/IMG_2842.jpg" alt="Outdoor patio at sunset"></div>
+      <div class="gallery-item"><img src="rabnb-photos/IMG_2858.jpg" alt="Living room interior"></div>
+      <div class="gallery-item"><img src="rabnb-photos/IMG_2468.jpg" alt="Milky Way night sky"></div>
+      <div class="gallery-item"><img src="rabnb-photos/IMG_3566.jpg" alt="Fiery red sunset"></div>
+      <div class="gallery-item"><img src="rabnb-photos/IMG_3059.jpg" alt="Backyard at sunset"></div>
+      <div class="gallery-item"><img src="rabnb-photos/IMG_3535.jpg" alt="Golden hour sunset"></div>
+      <div class="gallery-item"><img src="rabnb-photos/IMG_4287.png" alt="House exterior daytime"></div>
+      <div class="gallery-item"><img src="rabnb-photos/IMG_7521.png" alt="House in snow"></div>
+      <div class="gallery-item"><img src="rabnb-photos/IMG_7622.png" alt="Property on a clear day"></div>
+      <div class="gallery-item"><img src="rabnb-photos/IMG_6760.png" alt="Landscape at dusk"></div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <div style="text-align:center;padding:24px 16px 32px;font-size:12px;color:#aaa;border-top:1px solid #eee;margin-top:40px;">
     built with vibes by Sophie, Patrick, Charlie, The Beast, and Claude &copy; 2026
@@ -870,5 +1034,18 @@
     <button class="mobile-bid-btn">🍺 Bid at Auction</button>
   </div>
 
+  <script>
+    function openGallery() {
+      document.getElementById('galleryOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeGallery() {
+      document.getElementById('galleryOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeGallery();
+    });
+  </script>
 </body>
 </html>
