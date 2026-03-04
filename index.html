@@ -174,17 +174,18 @@
     }
 
     .host-avatar {
-      width: 48px;
-      height: 48px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
-      background: #FF385C;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: white;
-      font-weight: 700;
+      overflow: hidden;
       flex-shrink: 0;
+      border: 2px solid #eee;
+    }
+    .host-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
     }
 
     .host-info .host-name {
@@ -351,6 +352,11 @@
 
     .guest-row .guest-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
     .guest-row .guest-val { font-size: 14px; color: #717171; }
+
+    @keyframes confettiFall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+    }
 
     .bid-btn {
       width: 100%;
@@ -714,7 +720,7 @@
 
       <!-- HOST -->
       <div class="host-row">
-        <div class="host-avatar">S&P</div>
+        <div class="host-avatar"><img src="rabnb-photos/sophie-and-patrick.jpeg" alt="Sophie and Patrick"></div>
         <div class="host-info">
           <div class="host-name">Hosted by Sophie & Patrick</div>
           <div class="host-sub">Your RAs · 2 years hosting · Response rate: very high (they live next door)</div>
@@ -738,7 +744,7 @@
             <div><div class="guest-label">Stay</div><div class="guest-val">5 nights max</div></div>
             <span style="font-size:20px">🌙</span>
           </div>
-          <button class="bid-btn">🍺 Bid at Beer Bike Auction</button>
+          <button class="bid-btn" onclick="openBidModal()">🍺 Bid at Beer Bike Auction</button>
           <div class="bid-note">You won't be charged yet — just come ready to outbid your friends.</div>
         </div>
       </div>
@@ -771,12 +777,12 @@
         <div class="sleep-card">
           <div class="sleep-icon">🛏️</div>
           <div class="sleep-name">Primary Bedroom</div>
-          <div class="sleep-desc">1 king bed · Fresh sheets · Record player · Marfa Public Radio (93.5 FM) · Private bathroom · Note: if Sophie & Patrick are on-site, this is their room — guests get the second room and Skoolie</div>
+          <div class="sleep-desc">1 king bed · Fresh sheets · Record player · Marfa Public Radio (93.5 FM) · Private bathroom · Note: if Sophie & Patrick are on-site, this is their room — guests get the second room, Skoolie, and camping</div>
         </div>
         <div class="sleep-card">
           <div class="sleep-icon">🛋️</div>
           <div class="sleep-name">Second Room</div>
-          <div class="sleep-desc">Queen-sized pull-out sofa with mattress topper and bedding · Plus two twin cots with sheets and pillows available anywhere in the house · Attached bathroom · Better than it sounds, we promise</div>
+          <div class="sleep-desc">Queen-sized pull-out sofa with mattress topper and bedding · Plus two twin cots with sheets and pillows available anywhere in the house · Attached bathroom · Sophie's parents sleep here when they visit and their backs are older than yours — zero complaints</div>
         </div>
         <div class="sleep-card">
           <div class="sleep-icon">🚌</div>
@@ -987,7 +993,7 @@
           <span style="font-size:20px">🌙</span>
         </div>
 
-        <button class="bid-btn">🍺 Bid at Beer Bike Auction</button>
+        <button class="bid-btn" onclick="openBidModal()">🍺 Bid at Beer Bike Auction</button>
 
         <div class="bid-note">You won't be charged yet — just come ready to outbid your friends.</div>
 
@@ -1033,7 +1039,25 @@
   <!-- MOBILE STICKY BOTTOM BAR -->
   <div class="mobile-sticky-bar">
     <div class="mobile-price">$50 starting bid <span>· Mar 6, 7:30pm</span></div>
-    <button class="mobile-bid-btn">🍺 Bid at Auction</button>
+    <button class="mobile-bid-btn" onclick="openBidModal()">🍺 Bid at Auction</button>
+  </div>
+
+  <!-- BID MODAL -->
+  <div id="bidModal" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:20px;">
+    <div style="background:#fff;border-radius:20px;max-width:440px;width:100%;padding:36px 32px;text-align:center;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+      <button onclick="closeBidModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#717171;">✕</button>
+      <div style="font-size:48px;margin-bottom:12px;">🍺</div>
+      <h2 style="font-size:24px;font-weight:700;margin:0 0 8px;">Be there or be square.</h2>
+      <p style="color:#444;font-size:15px;line-height:1.6;margin:0 0 24px;">
+        <strong>Beer Bike Auction</strong><br>
+        March 6 &nbsp;·&nbsp; 7:30–9:00pm<br>
+        Baker College &nbsp;·&nbsp; Come ready to outbid your friends
+      </p>
+      <button onclick="downloadCalendar()" style="width:100%;background:linear-gradient(135deg,#FF385C,#E8143A);color:#fff;border:none;border-radius:10px;padding:14px 20px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:12px;">
+        📅 &nbsp;Add to my calendar
+      </button>
+      <p style="font-size:12px;color:#aaa;margin:0;">Works with Apple Calendar, Google Calendar, Outlook, and basically everything else.</p>
+    </div>
   </div>
 
   <script>
@@ -1045,8 +1069,69 @@
       document.getElementById('galleryOverlay').classList.remove('open');
       document.body.style.overflow = '';
     }
+    function openBidModal() {
+      const m = document.getElementById('bidModal');
+      m.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      launchConfetti();
+    }
+
+    function launchConfetti() {
+      const colors = ['#FF385C','#FFD700','#4CAF50','#2196F3','#FF9800','#E040FB','#00BCD4'];
+      const container = document.getElementById('bidModal');
+      for (let i = 0; i < 80; i++) {
+        const piece = document.createElement('div');
+        const size = Math.random() * 8 + 6;
+        piece.style.cssText = `
+          position:fixed;
+          width:${size}px;
+          height:${size * (Math.random() > 0.5 ? 1 : 2.5)}px;
+          background:${colors[Math.floor(Math.random() * colors.length)]};
+          left:${Math.random() * 100}vw;
+          top:-20px;
+          border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+          z-index:3000;
+          pointer-events:none;
+          opacity:1;
+          transform:rotate(${Math.random() * 360}deg);
+          animation:confettiFall ${1.5 + Math.random() * 2}s ease-in forwards;
+          animation-delay:${Math.random() * 0.5}s;
+        `;
+        document.body.appendChild(piece);
+        piece.addEventListener('animationend', () => piece.remove());
+      }
+    }
+    function closeBidModal() {
+      const m = document.getElementById('bidModal');
+      m.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    function downloadCalendar() {
+      const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//RABnB//Beer Bike Auction//EN',
+        'BEGIN:VEVENT',
+        'DTSTART:20260306T193000',
+        'DTEND:20260306T210000',
+        'SUMMARY:Beer Bike Auction 🍺 — Bid on RABnB',
+        'DESCRIPTION:Come ready to bid on RABnB — a stay at Sophie & Patrick\'s place in Fort Davis\\, TX. Starting bid $50. Preview the listing: https://sophierandolph.github.io/rabnb',
+        'LOCATION:Baker College\\, Rice University\\, Houston TX',
+        'STATUS:CONFIRMED',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'beer-bike-auction.ics';
+      a.click();
+    }
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeGallery();
+      if (e.key === 'Escape') { closeGallery(); closeBidModal(); }
+    });
+    document.getElementById('bidModal').addEventListener('click', function(e) {
+      if (e.target === this) closeBidModal();
     });
   </script>
 </body>
